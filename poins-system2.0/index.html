@@ -1,0 +1,408 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phantasia电竞积分系统 - 首页</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        /* 导航栏 */
+        .header {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo-img {
+            height: 45px;
+            filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+        }
+        .brand-text {
+            font-size: 1.3em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .nav-btns { display: flex; gap: 15px; }
+        .nav-btn {
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .nav-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .nav-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Hero区域 */
+        .hero {
+            padding: 140px 20px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero-logo {
+            width: 180px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+        }
+        .hero h1 { 
+            font-size: 2.8em; 
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #a8b2d1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p { 
+            font-size: 1.2em; 
+            opacity: 0.8; 
+            margin-bottom: 40px;
+            color: #a8b2d1;
+        }
+        
+        /* 注册渠道选择 */
+        .register-channels {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+        .channel-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            width: 280px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+        .channel-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .channel-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        .channel-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .channel-desc {
+            font-size: 0.9em;
+            opacity: 0.7;
+            line-height: 1.6;
+        }
+        .channel-card.internal {
+            border-top: 3px solid #667eea;
+        }
+        .channel-card.external {
+            border-top: 3px solid #f5576c;
+        }
+        
+        /* 排行榜区域 */
+        .leaderboard-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 30px 30px 0 0;
+            padding: 60px 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 40px;
+            color: #fff;
+        }
+        .boards-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        @media (max-width: 768px) {
+            .boards-container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2em; }
+            .hero-logo { width: 120px; }
+        }
+        
+        .board-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .board-header {
+            padding: 25px;
+            color: white;
+            text-align: center;
+        }
+        .board-header.internal { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        }
+        .board-header.external { 
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+        }
+        .board-header h3 { font-size: 1.5em; margin-bottom: 5px; }
+        .board-header p { opacity: 0.9; font-size: 0.9em; }
+        
+        .rank-list { padding: 20px; }
+        .rank-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.3s;
+        }
+        .rank-item:hover { background: rgba(255,255,255,0.05); }
+        .rank-item.top3 { background: rgba(255, 215, 0, 0.1); }
+        
+        .rank-num {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        .rank-num.gold { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #333; }
+        .rank-num.silver { background: linear-gradient(135deg, #c0c0c0, #e8e8e8); color: #333; }
+        .rank-num.bronze { background: linear-gradient(135deg, #cd7f32, #daa520); color: white; }
+        .rank-num.normal { background: rgba(255,255,255,0.1); color: #999; }
+        
+        .rank-info { flex: 1; }
+        .rank-name { font-weight: 600; color: #fff; margin-bottom: 3px; }
+        .rank-dept { font-size: 0.85em; color: #888; }
+        .rank-points {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .footer {
+            background: rgba(0,0,0,0.3);
+            padding: 40px 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .admin-link {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .channel-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .channel-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-section">
+            <img src="微信图片_20260225130217_92_20.jpg" alt="Phantasia" class="logo-img">
+            <span class="brand-text">Phantasia电竞积分系统</span>
+        </div>
+        <div class="nav-btns">
+            <a href="auth.html" class="nav-btn secondary">登录</a>
+            <a href="#register" class="nav-btn primary">注册账号</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <img src="微信图片_20260225130217_92_20.jpg" alt="Phantasia Logo" class="hero-logo">
+            <h1>Phantasia电竞积分系统</h1>
+            <p>内部员工与外部客户专属积分兑换平台<br>参与电竞活动，赢取丰厚奖励</p>
+            
+            <div class="register-channels" id="register">
+                <a href="auth.html?type=internal&action=register" class="channel-card internal">
+                    <div class="channel-icon">🏢</div>
+                    <div class="channel-title">内部员工注册</div>
+                    <div class="channel-desc">企业正式员工通道<br>需管理员审核通过</div>
+                </a>
+                <a href="auth.html?type=external&action=register" class="channel-card external">
+                    <div class="channel-icon">🌐</div>
+                    <div class="channel-title">外部客户注册</div>
+                    <div class="channel-desc">合作伙伴/客户通道<br>快速注册，即时使用</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="leaderboard-section">
+        <h2 class="section-title">🏆 积分排行榜</h2>
+        <div class="boards-container">
+            <!-- 内部成员排行榜 -->
+            <div class="board-card">
+                <div class="board-header internal">
+                    <h3>🏢 内部员工榜</h3>
+                    <p>实时展示员工积分排名</p>
+                </div>
+                <div class="rank-list" id="internalBoard">
+                    <div style="text-align: center; padding: 40px; color: #666;">加载中...</div>
+                </div>
+            </div>
+            
+            <!-- 外部成员排行榜 -->
+            <div class="board-card">
+                <div class="board-header external">
+                    <h3>🌐 外部客户榜</h3>
+                    <p>实时展示客户积分排名</p>
+                </div>
+                <div class="rank-list" id="externalBoard">
+                    <div style="text-align: center; padding: 40px; color: #666;">加载中...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© 2026 Phantasia电竞积分系统 | <a href="admin.html" class="admin-link">管理后台</a></p>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = 'pointsSystemData_v3';
+        
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            return saved ? JSON.parse(saved) : { users: [], items: [], history: [], pendingUsers: [] };
+        }
+        
+        function renderLeaderboard() {
+            const data = loadData();
+            
+            // 分离内部和外部用户（只显示已批准的）
+            const internalUsers = data.users.filter(u => u.type === 'internal' && u.status === 'approved')
+                .sort((a, b) => b.points - a.points)
+                .slice(0, 10);
+                
+            const externalUsers = data.users.filter(u => u.type === 'external' && u.status === 'approved')
+                .sort((a, b) => b.points - a.points)
+                .slice(0, 10);
+            
+            renderBoard('internalBoard', internalUsers, true);
+            renderBoard('externalBoard', externalUsers, false);
+        }
+        
+        function renderBoard(containerId, users, showDept) {
+            const container = document.getElementById(containerId);
+            
+            if (users.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">暂无数据</div>';
+                return;
+            }
+            
+            container.innerHTML = users.map((user, index) => {
+                let rankClass = 'normal';
+                if (index === 0) rankClass = 'gold';
+                else if (index === 1) rankClass = 'silver';
+                else if (index === 2) rankClass = 'bronze';
+                
+                const topClass = index < 3 ? 'top3' : '';
+                
+                return `
+                    <div class="rank-item ${topClass}">
+                        <div class="rank-num ${rankClass}">${index + 1}</div>
+                        <div class="rank-info">
+                            <div class="rank-name">${user.name}</div>
+                            ${showDept && user.department ? `<div class="rank-dept">${user.department}</div>` : ''}
+                        </div>
+                        <div class="rank-points">${user.points}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // 初始化
+        renderLeaderboard();
+        
+        // 监听数据变化
+        window.addEventListener('storage', function(e) {
+            if (e.key === STORAGE_KEY) {
+                renderLeaderboard();
+            }
+        });
+        
+        // 每秒刷新一次（本页面内数据同步）
+        setInterval(renderLeaderboard, 1000);
+    </script>
+</body>
+</html>
